@@ -1,0 +1,45 @@
+[h1]Casual City[/h1]
+
+Build your city without the frustration. No more floods wiping out neighborhoods, no more endless traffic jams, and sunny skies every day.
+
+Every feature has its own switch in [b]Options → Casual City[/b] and can be changed at any time, even in the middle of a game.
+
+[h2]Features[/h2]
+[list]
+[*][b]Buildings never flood[/b]: no flood warnings, no abandoned or collapsed buildings because of water.
+[*][b]Roads never flood[/b]: roads stay open and parked cars are safe.
+[*][b]Drain pipes don't raise the water level[/b]: sewage is still handled, but lakes and rivers stop rising because of your drain pipes.
+[*][b]Keep the city dry[/b]: water that reaches buildings or roads is pumped away automatically. Lakes, rivers and the sea are never drained below your city's ground level.
+[*][b]Drain flood water now[/b]: one button to clear an existing flood.
+[*][b]Traffic slider[/b]: choose how often residents and tourists drive (10–100% of normal). Everyone else walks, cycles or takes public transport. Default: 50%.
+[*][b]Always sunny[/b]: no rain, fog or thunderstorms.
+[/list]
+
+[h2]Requirements[/h2]
+[list]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2040656402]Harmony[/url] (subscribed automatically as a required item)
+[*]No DLC required
+[/list]
+
+[h2]Compatibility[/h2]
+[list]
+[*][b]Windows and macOS[/b], including Apple Silicon (M1/M2/M3) Macs.
+[*][b]Traffic Manager: President Edition (TM:PE)[/b]: works alongside it. The traffic slider still applies with TM:PE installed.
+[*]Safe to add to existing saves. Turning a feature off returns that part of the game to normal.
+[*]Remove-safe: the mod doesn't store anything in your save file.
+[/list]
+
+[h2]Good to know[/h2]
+[list]
+[*]The traffic slider affects residents and tourists. Trucks, buses and service vehicles are not changed. Tip: use the [b]Heavy Traffic Ban[/b] district policy and office zones to cut down on trucks.
+[*]If a lake has already overflowed into your city, "Keep the city dry" may need to pump it a few times before the lake settles back inside its banks.
+[*]Flooded roads can still look wet for a while.
+[/list]
+
+[h2]Why does my city flood?[/h2]
+Most floods come from [b]drain pipes in small lakes or slow rivers[/b], which keep raising the water, and from [b]canals[/b] connected to the sea or a river. Put drain pipes at the sea or a big river downstream of your city. Casual City handles the rest.
+
+[h2]Source code[/h2]
+[url=https://github.com/the-cozy-studio/city_skylines_casual_city]github.com/the-cozy-studio/city_skylines_casual_city[/url]
+
+Found a bug? Leave a comment with your other mods listed, or open an issue on GitHub.

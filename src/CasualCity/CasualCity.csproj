@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- The game runs mods on Mono / .NET Framework 3.5 on every OS. -->
+    <TargetFramework>net35</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>CasualCity</AssemblyName>
+    <RootNamespace>CasualCity</RootNamespace>
+    <Version>0.1.0</Version>
+    <Deterministic>true</Deterministic>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Keep local folder names out of the published DLL and PDB. -->
+    <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../'))=/_/</PathMap>
+  </PropertyGroup>
+
+  <!-- Game DLL folder and local mods folder. Override with -p:ManagedDir=... / -p:ModsDir=... or env vars. -->
+  <PropertyGroup Condition="'$(ManagedDir)' == '' And $([MSBuild]::IsOSPlatform('Windows'))">
+    <ManagedDir>C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed</ManagedDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ManagedDir)' == '' And $([MSBuild]::IsOSPlatform('OSX'))">
+    <ManagedDir>$(HOME)/Library/Application Support/Steam/steamapps/common/Cities_Skylines/Cities.app/Contents/Resources/Data/Managed</ManagedDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ModsDir)' == '' And $([MSBuild]::IsOSPlatform('Windows'))">
+    <ModsDir>$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods</ModsDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ModsDir)' == '' And $([MSBuild]::IsOSPlatform('OSX'))">
+    <ModsDir>$(HOME)/Library/Application Support/Colossal Order/Cities_Skylines/Addons/Mods</ModsDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net35" Version="1.0.3" PrivateAssets="all" />
+    <!-- Harmony itself is provided at runtime by the Harmony Workshop mod (2040656402). -->
+    <PackageReference Include="CitiesHarmony.API" Version="2.2.0" />
+  </ItemGroup>
+
+  <!-- Game assemblies: compile against them, never copy or commit them. -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(ManagedDir)/Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>$(ManagedDir)/ColossalManaged.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ICities">
+      <HintPath>$(ManagedDir)/ICities.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(ManagedDir)/UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Copy the mod into the local mods folder so the game picks it up. Skip with -p:DeployMod=false. -->
+  <Target Name="DeployMod" AfterTargets="Build" Condition="'$(DeployMod)' != 'false'">
+    <ItemGroup>
+      <ModFiles Include="$(TargetDir)CasualCity.dll;$(TargetDir)CitiesHarmony.API.dll" />
+      <ModFiles Include="$(MSBuildThisFileDirectory)../../assets/PreviewImage.png" Condition="Exists('$(MSBuildThisFileDirectory)../../assets/PreviewImage.png')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(ModsDir)/CasualCity" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Casual City deployed to $(ModsDir)/CasualCity" />
+  </Target>
+
+  <!-- Release builds also produce dist/CasualCity.zip: a ready-to-copy mod folder for another PC or Mac. -->
+  <Target Name="PackageMod" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <PackageStage>$(IntermediateOutputPath)package/</PackageStage>
+      <DistDir>$(MSBuildThisFileDirectory)../../dist/</DistDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageFiles Include="$(TargetDir)CasualCity.dll;$(TargetDir)CitiesHarmony.API.dll" />
+      <PackageFiles Include="$(MSBuildThisFileDirectory)../../assets/PreviewImage.png" Condition="Exists('$(MSBuildThisFileDirectory)../../assets/PreviewImage.png')" />
+    </ItemGroup>
+    <RemoveDir Directories="$(PackageStage)" />
+    <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(PackageStage)CasualCity" />
+    <MakeDir Directories="$(DistDir)" />
+    <ZipDirectory SourceDirectory="$(PackageStage)" DestinationFile="$(DistDir)CasualCity.zip" Overwrite="true" />
+    <Message Importance="high" Text="Casual City packaged to $([System.IO.Path]::GetFullPath('$(DistDir)CasualCity.zip'))" />
+  </Target>
+
+</Project>

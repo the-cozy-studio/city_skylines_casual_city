@@ -1,0 +1,29 @@
+# Build output
+bin/
+obj/
+dist/
+*.dll
+*.pdb
+*.mdb
+*.zip
+*.nupkg
+
+# Local overrides
+*.user
+Directory.Build.props.user
+
+# IDE / tooling
+.vs/
+.vscode/
+.idea/
+*.suo
+*.swp
+.claude/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
